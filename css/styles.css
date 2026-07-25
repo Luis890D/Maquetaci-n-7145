@@ -1,15 +1,16 @@
 ﻿/* =====================================================
-   NovaMarket - Estilos Personalizados
+   ByteCore — Componentes y Hardware para PC
    Archivo: css/styles.css
    ===================================================== */
 
 /* ── Variables de color ── */
 :root {
-    --nm-ink: #1f2937;
-    --nm-cream: #faf7f2;
-    --nm-accent: #0f766e;
-    --nm-accent-dark: #0b5c56;
-    --nm-gold: #c9a24b;
+    --nm-ink:        #0f172a;
+    --nm-dark:       #1e293b;
+    --nm-cream:      #f0f4f8;
+    --nm-accent:     #2563eb;
+    --nm-accent-dark:#1d4ed8;
+    --nm-gold:       #38bdf8;
 }
 
 /* ── Estilos globales ── */
@@ -21,7 +22,8 @@ body {
 
 /* ── Navbar / Marca ── */
 .navbar-brand {
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1.4rem;
     letter-spacing: .5px;
 }
 
@@ -31,7 +33,7 @@ body {
 
 /* ── Barra superior ── */
 .top-bar {
-    background-color: var(--nm-ink);
+    background: linear-gradient(90deg, #0f172a 0%, #1e3a5f 100%);
     color: #fff;
 }
 
@@ -58,59 +60,75 @@ body {
 /* ── Carousel ── */
 .carousel-caption h2 {
     font-weight: 700;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+    font-size: 1.8rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .7);
 }
 
 .carousel-caption p {
-    text-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, .6);
+    font-size: 1.05rem;
 }
 
 /* ── Panel de categorias ── */
 .category-panel {
     background-color: #fff;
-    border-radius: .5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+    border-radius: .6rem;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, .08);
     overflow: hidden;
 }
 
 .category-panel .list-group-item {
     border: none;
-    border-bottom: 1px solid #eee;
-    padding: .85rem 1.1rem;
+    border-bottom: 1px solid #e8edf3;
+    padding: .8rem 1.1rem;
     cursor: default;
-    transition: background-color .15s ease;
+    font-size: .9rem;
+    transition: background-color .15s ease, padding-left .15s ease;
 }
 
 .category-panel .list-group-item:hover {
-    background-color: #f1f5f4;
+    background-color: #eff6ff;
     color: var(--nm-accent-dark);
+    padding-left: 1.5rem;
 }
 
 .category-panel .list-group-title {
-    background-color: var(--nm-ink);
+    background: linear-gradient(90deg, #0f172a 0%, #1e3a5f 100%);
     color: #fff;
     font-weight: 600;
     padding: .9rem 1.1rem;
     letter-spacing: .5px;
 }
 
+/* ── Utilidad icono de acento ── */
+.text-accent {
+    color: var(--nm-accent) !important;
+}
+
+/* ── Badge de categoría de producto ── */
+.bg-accent {
+    background-color: var(--nm-accent) !important;
+    font-size: .7rem;
+    letter-spacing: .4px;
+}
+
 /* ── Tarjetas de producto ── */
 .product-card {
     border: none;
-    border-radius: .6rem;
+    border-radius: .7rem;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
-    transition: transform .2s ease, box-shadow .2s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .07);
+    transition: transform .22s ease, box-shadow .22s ease;
     height: 100%;
 }
 
 .product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(37, 99, 235, .15);
 }
 
 .product-card .card-img-top {
-    height: 220px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -118,7 +136,7 @@ body {
 .product-price {
     font-weight: 700;
     color: var(--nm-accent-dark);
-    font-size: 1.1rem;
+    font-size: 1.15rem;
 }
 
 /* ── Boton personalizado ── */
@@ -127,24 +145,27 @@ body {
     border-color: var(--nm-accent);
     color: #fff;
     font-weight: 600;
+    border-radius: .4rem;
+    transition: background-color .2s ease, transform .1s ease;
 }
 
 .btn-nm:hover {
     background-color: var(--nm-accent-dark);
     border-color: var(--nm-accent-dark);
     color: #fff;
+    transform: translateY(-1px);
 }
 
 /* ── Titulo de seccion ── */
 .section-title {
     font-weight: 700;
-    border-left: 5px solid var(--nm-gold);
+    border-left: 5px solid var(--nm-accent);
     padding-left: .6rem;
     margin-bottom: 1.25rem;
 }
 
 /* ── Footer ── */
 footer {
-    background-color: var(--nm-ink);
-    color: #f1f1f1;
+    background: linear-gradient(90deg, #0f172a 0%, #1e3a5f 100%);
+    color: #cbd5e1;
 }
