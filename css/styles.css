@@ -1,0 +1,150 @@
+﻿/* =====================================================
+   NovaMarket - Estilos Personalizados
+   Archivo: css/styles.css
+   ===================================================== */
+
+/* ── Variables de color ── */
+:root {
+    --nm-ink: #1f2937;
+    --nm-cream: #faf7f2;
+    --nm-accent: #0f766e;
+    --nm-accent-dark: #0b5c56;
+    --nm-gold: #c9a24b;
+}
+
+/* ── Estilos globales ── */
+body {
+    background-color: var(--nm-cream);
+    color: var(--nm-ink);
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* ── Navbar / Marca ── */
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.navbar-brand span {
+    color: var(--nm-gold);
+}
+
+/* ── Barra superior ── */
+.top-bar {
+    background-color: var(--nm-ink);
+    color: #fff;
+}
+
+/* ── Icono del carrito ── */
+.cart-icon {
+    position: relative;
+    color: #fff;
+    font-size: 1.4rem;
+    text-decoration: none;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: var(--nm-gold);
+    color: var(--nm-ink);
+    font-size: .65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 50rem;
+}
+
+/* ── Carousel ── */
+.carousel-caption h2 {
+    font-weight: 700;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+}
+
+.carousel-caption p {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+}
+
+/* ── Panel de categorias ── */
+.category-panel {
+    background-color: #fff;
+    border-radius: .5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+    overflow: hidden;
+}
+
+.category-panel .list-group-item {
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: .85rem 1.1rem;
+    cursor: default;
+    transition: background-color .15s ease;
+}
+
+.category-panel .list-group-item:hover {
+    background-color: #f1f5f4;
+    color: var(--nm-accent-dark);
+}
+
+.category-panel .list-group-title {
+    background-color: var(--nm-ink);
+    color: #fff;
+    font-weight: 600;
+    padding: .9rem 1.1rem;
+    letter-spacing: .5px;
+}
+
+/* ── Tarjetas de producto ── */
+.product-card {
+    border: none;
+    border-radius: .6rem;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+    transition: transform .2s ease, box-shadow .2s ease;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
+}
+
+.product-card .card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
+/* ── Precio del producto ── */
+.product-price {
+    font-weight: 700;
+    color: var(--nm-accent-dark);
+    font-size: 1.1rem;
+}
+
+/* ── Boton personalizado ── */
+.btn-nm {
+    background-color: var(--nm-accent);
+    border-color: var(--nm-accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+.btn-nm:hover {
+    background-color: var(--nm-accent-dark);
+    border-color: var(--nm-accent-dark);
+    color: #fff;
+}
+
+/* ── Titulo de seccion ── */
+.section-title {
+    font-weight: 700;
+    border-left: 5px solid var(--nm-gold);
+    padding-left: .6rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ── Footer ── */
+footer {
+    background-color: var(--nm-ink);
+    color: #f1f1f1;
+}
