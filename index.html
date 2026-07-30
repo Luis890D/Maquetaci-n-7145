@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -26,7 +26,7 @@
                 </span>
                 <a href="#" class="cart-icon" aria-disabled="true" onclick="return false;">
                     <i class="bi bi-cart3"></i>
-                    <span class="cart-badge">3</span>
+                    <span class="cart-badge" id="contadorCarrito">0</span>
                 </a>
             </div>
         </div>
@@ -102,81 +102,17 @@
             <!-- Columna derecha: Productos -->
             <div class="col-sm-9">
                 <h4 class="section-title">Componentes Destacados</h4>
-                <div class="row g-4">
 
-                    <div class="col-12 col-md-4">
-                        <div class="card product-card">
-                            <img src="https://picsum.photos/id/160/400/300" class="card-img-top" alt="Procesador AMD Ryzen 5 7600X">
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-accent mb-1" style="width:fit-content;">CPU</span>
-                                <h6 class="card-title">AMD Ryzen 5 7600X</h6>
-                                <p class="product-price mb-3">Q1,850.00</p>
-                                <button class="btn btn-nm mt-auto" disabled>Agregar al carrito</button>
-                            </div>
-                        </div>
+                <!-- Estado de carga -->
+                <div id="loadingProductos" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;">
+                        <span class="visually-hidden">Cargando productos...</span>
                     </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card product-card">
-                            <img src="https://picsum.photos/id/250/400/300" class="card-img-top" alt="NVIDIA RTX 4060">
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-accent mb-1" style="width:fit-content;">GPU</span>
-                                <h6 class="card-title">NVIDIA GeForce RTX 4060</h6>
-                                <p class="product-price mb-3">Q3,499.00</p>
-                                <button class="btn btn-nm mt-auto" disabled>Agregar al carrito</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card product-card">
-                            <img src="https://picsum.photos/id/0/400/300" class="card-img-top" alt="RAM DDR5 16GB">
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-accent mb-1" style="width:fit-content;">RAM</span>
-                                <h6 class="card-title">Kingston Fury Beast DDR5 16GB</h6>
-                                <p class="product-price mb-3">Q620.00</p>
-                                <button class="btn btn-nm mt-auto" disabled>Agregar al carrito</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card product-card">
-                            <img src="https://picsum.photos/id/367/400/300" class="card-img-top" alt="SSD NVMe 1TB">
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-accent mb-1" style="width:fit-content;">SSD</span>
-                                <h6 class="card-title">Samsung 990 Pro NVMe 1TB</h6>
-                                <p class="product-price mb-3">Q899.00</p>
-                                <button class="btn btn-nm mt-auto" disabled>Agregar al carrito</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card product-card">
-                            <img src="https://picsum.photos/id/119/400/300" class="card-img-top" alt="Monitor Gaming 144Hz">
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-accent mb-1" style="width:fit-content;">Monitor</span>
-                                <h6 class="card-title">AOC 24G2 IPS 144Hz FHD</h6>
-                                <p class="product-price mb-3">Q1,250.00</p>
-                                <button class="btn btn-nm mt-auto" disabled>Agregar al carrito</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card product-card">
-                            <img src="https://picsum.photos/id/96/400/300" class="card-img-top" alt="Teclado Mecánico Gaming">
-                            <div class="card-body d-flex flex-column">
-                                <span class="badge bg-accent mb-1" style="width:fit-content;">Periférico</span>
-                                <h6 class="card-title">Teclado Mecánico Redragon K552</h6>
-                                <p class="product-price mb-3">Q349.00</p>
-                                <button class="btn btn-nm mt-auto" disabled>Agregar al carrito</button>
-                            </div>
-                        </div>
-                    </div>
-
+                    <p class="mt-3 text-muted">Cargando productos...</p>
                 </div>
+
+                <!-- Contenedor dinámico de productos -->
+                <div class="row g-4" id="contenedorProductos"></div>
             </div>
 
         </div>
@@ -189,6 +125,88 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script de carga dinámica de productos -->
+    <script>
+        const API_URL = "https://backservicetest-g8emcvdff0fqe2b8.canadacentral-01.azurewebsites.net/api/producto";
+        const contenedorProductos = document.getElementById("contenedorProductos");
+        const loadingProductos    = document.getElementById("loadingProductos");
+        const contadorCarrito     = document.getElementById("contadorCarrito");
+        let carrito = 0;
+
+        async function cargarProductos() {
+            try {
+                const response = await fetch(API_URL);
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const productos = await response.json();
+
+                // Ocultar spinner
+                loadingProductos.style.display = "none";
+
+                if (!productos || productos.length === 0) {
+                    contenedorProductos.innerHTML = '<div class="col-12"><div class="alert alert-warning">No hay productos disponibles en este momento.</div></div>';
+                    return;
+                }
+
+                for (const producto of productos) {
+                    const col = document.createElement("div");
+                    col.className = "col-sm-12 col-md-4 mb-4";
+
+                    // Lógica de precio: oferta o precio normal
+                    let precioHTML;
+                    if (producto.enOferta && producto.precioOferta != null) {
+                        precioHTML = `
+                            <p class="mb-2">
+                                <span class="product-price text-danger me-2">$${parseFloat(producto.precioOferta).toFixed(2)}</span>
+                                <small class="text-muted text-decoration-line-through">$${parseFloat(producto.precio).toFixed(2)}</small>
+                            </p>
+                        `;
+                    } else {
+                        precioHTML = `<p class="product-price mb-2">$${parseFloat(producto.precio).toFixed(2)}</p>`;
+                    }
+
+                    col.innerHTML = `
+                        <div class="card product-card h-100">
+                            <img src="${producto.imagen}" class="card-img-top img-fluid" alt="${producto.nombre}">
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title">${producto.nombre}</h6>
+                                <p class="card-text text-muted small flex-grow-1">${producto.descripcion}</p>
+                                ${precioHTML}
+                                <button class="btn btn-nm mt-auto agregarCarrito">Agregar al carrito</button>
+                            </div>
+                        </div>
+                    `;
+
+                    // Evento del botón "Agregar al carrito"
+                    col.querySelector(".agregarCarrito").addEventListener("click", () => {
+                        carrito++;
+                        contadorCarrito.textContent = carrito;
+                    });
+
+                    contenedorProductos.appendChild(col);
+                }
+
+            } catch (error) {
+                console.error("Error al cargar productos:", error);
+                loadingProductos.style.display = "none";
+                contenedorProductos.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <span>No se pudieron cargar los productos. Por favor, intenta más tarde.</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Iniciar carga al cargar la página
+        cargarProductos();
+    </script>
 </body>
 
 </html>
