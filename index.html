@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ByteCore | Componentes y Hardware para PC</title>
-    <meta name="description" content="ByteCore — Tu tienda especializada en procesadores, tarjetas de video, RAM, almacenamiento y periféricos para PC. Envío a todo Guatemala.">
+    <meta name="description"
+        content="ByteCore — Tu tienda especializada en procesadores, tarjetas de video, RAM, almacenamiento y periféricos para PC. Envío a todo Guatemala.">
     <!-- Bootstrap CSS (CDN) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons (CDN) -->
@@ -53,7 +54,7 @@
                 <img src="https://picsum.photos/id/180/1600/500" class="d-block w-100"
                     style="max-height:460px; object-fit:cover; filter:brightness(.65);" alt="Nuevos Procesadores">
                 <div class="carousel-caption d-none d-md-block">
-                    <h2>⚡ Nuevos Procesadores Intel & AMD</h2>
+                    <h2>⚡ Nuevos Procesadores Intel &amp; AMD</h2>
                     <p>Core i9-14900K y Ryzen 9 7900X disponibles en stock</p>
                     <a href="#productos" class="btn btn-nm px-4">Ver CPUs</a>
                 </div>
@@ -80,28 +81,50 @@
     <div class="container my-5" id="productos">
         <div class="row">
 
-            <!-- Columna izquierda: Categorías -->
+            <!-- Columna izquierda: Categorías (dinámicas desde API) -->
             <div class="col-sm-3 mb-4">
                 <div class="category-panel">
                     <div class="list-group-title">
                         <i class="bi bi-grid-fill me-2"></i>Categorías
                     </div>
-                    <div class="list-group list-group-flush">
-                        <span class="list-group-item"><i class="bi bi-cpu me-2 text-accent"></i>Procesadores (CPU)</span>
-                        <span class="list-group-item"><i class="bi bi-gpu-card me-2 text-accent"></i>Tarjetas de Video (GPU)</span>
-                        <span class="list-group-item"><i class="bi bi-memory me-2 text-accent"></i>Memoria RAM</span>
-                        <span class="list-group-item"><i class="bi bi-device-hdd me-2 text-accent"></i>Almacenamiento (SSD/HDD)</span>
-                        <span class="list-group-item"><i class="bi bi-motherboard me-2 text-accent"></i>Tarjetas Madre</span>
-                        <span class="list-group-item"><i class="bi bi-display me-2 text-accent"></i>Monitores</span>
-                        <span class="list-group-item"><i class="bi bi-keyboard me-2 text-accent"></i>Periféricos</span>
-                        <span class="list-group-item"><i class="bi bi-box me-2 text-accent"></i>Gabinetes y Fuentes</span>
+                    <div class="list-group list-group-flush" id="contenedor-categorias">
+                        <!-- Se carga dinámicamente -->
+                        <button class="list-group-item list-group-item-action active text-start"
+                                onclick="filtrarCategoria(null, this)">
+                            <i class="bi bi-grid-fill me-2 text-accent"></i> Todo
+                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- Columna derecha: Productos -->
             <div class="col-sm-9">
-                <h4 class="section-title">Componentes Destacados</h4>
+
+                <!-- Encabezado de sección con filtros y botón -->
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <h4 class="section-title mb-0">Componentes Destacados</h4>
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <div class="form-check form-switch mb-0">
+                            <input class="form-check-input" type="checkbox" id="filtroOfertas">
+                            <label class="form-check-label small" for="filtroOfertas">Solo Ofertas</label>
+                        </div>
+                        <button class="btn btn-nm rounded-pill px-4 shadow-sm"
+                                onclick="abrirModalCrear()">
+                            <i class="bi bi-plus-lg me-1"></i> Añadir Producto
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Barra de búsqueda -->
+                <div class="mb-4">
+                    <div class="input-group shadow-sm rounded-pill overflow-hidden">
+                        <span class="input-group-text bg-white border-0 ps-4">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" id="inputBusqueda" class="form-control border-0 py-3 shadow-none"
+                               placeholder="Buscar productos por nombre...">
+                    </div>
+                </div>
 
                 <!-- Estado de carga -->
                 <div id="loadingProductos" class="text-center py-5">
@@ -112,101 +135,133 @@
                 </div>
 
                 <!-- Contenedor dinámico de productos -->
-                <div class="row g-4" id="contenedorProductos"></div>
-            </div>
+                <div class="row g-4" id="contenedor-productos"></div>
 
+            </div>
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="text-center py-4 mt-5">
-        <p class="mb-1"><strong>ByteCore</strong> — Hardware & Componentes para PC</p>
+        <p class="mb-1"><strong>ByteCore</strong> — Hardware &amp; Componentes para PC</p>
         <p class="mb-0 small">Diseñado por: Luis Aroche - Carné 23-7145</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ═══════════════════════════════════════════════
+         Modal: Formulario Crear / Editar Producto
+    ═══════════════════════════════════════════════ -->
+    <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title fw-bold" id="modalProductoLabel">Registrar Nuevo Producto</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body pb-4 px-4">
+                    <form id="formProducto">
+                        <input type="hidden" id="productoId" value="0">
 
-    <!-- Script de carga dinámica de productos -->
-    <script>
-        const API_URL = "https://backservicetest-g8emcvdff0fqe2b8.canadacentral-01.azurewebsites.net/api/producto";
-        const contenedorProductos = document.getElementById("contenedorProductos");
-        const loadingProductos    = document.getElementById("loadingProductos");
-        const contadorCarrito     = document.getElementById("contadorCarrito");
-        let carrito = 0;
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label text-muted small fw-bold">Nombre del Producto</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-none"
+                                   id="nombre" required placeholder="Ej. Mouse Gamer RGB">
+                        </div>
 
-        async function cargarProductos() {
-            try {
-                const response = await fetch(API_URL);
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label text-muted small fw-bold">Descripción</label>
+                            <textarea class="form-control bg-light border-0 shadow-none" id="descripcion"
+                                      rows="3" required placeholder="Detalles del producto..."></textarea>
+                        </div>
 
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-
-                const productos = await response.json();
-
-                // Ocultar spinner
-                loadingProductos.style.display = "none";
-
-                if (!productos || productos.length === 0) {
-                    contenedorProductos.innerHTML = '<div class="col-12"><div class="alert alert-warning">No hay productos disponibles en este momento.</div></div>';
-                    return;
-                }
-
-                for (const producto of productos) {
-                    const col = document.createElement("div");
-                    col.className = "col-sm-12 col-md-4 mb-4";
-
-                    // Lógica de precio: oferta o precio normal
-                    let precioHTML;
-                    if (producto.enOferta && producto.precioOferta != null) {
-                        precioHTML = `
-                            <p class="mb-2">
-                                <span class="product-price text-danger me-2">$${parseFloat(producto.precioOferta).toFixed(2)}</span>
-                                <small class="text-muted text-decoration-line-through">$${parseFloat(producto.precio).toFixed(2)}</small>
-                            </p>
-                        `;
-                    } else {
-                        precioHTML = `<p class="product-price mb-2">$${parseFloat(producto.precio).toFixed(2)}</p>`;
-                    }
-
-                    col.innerHTML = `
-                        <div class="card product-card h-100">
-                            <img src="${producto.imagen}" class="card-img-top img-fluid" alt="${producto.nombre}">
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title">${producto.nombre}</h6>
-                                <p class="card-text text-muted small flex-grow-1">${producto.descripcion}</p>
-                                ${precioHTML}
-                                <button class="btn btn-nm mt-auto agregarCarrito">Agregar al carrito</button>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="precio" class="form-label text-muted small fw-bold">Precio Regular (Q)</label>
+                                <input type="number" step="0.01" class="form-control bg-light border-0 shadow-none"
+                                       id="precio" required placeholder="0.00">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="categoriaSelect" class="form-label text-muted small fw-bold">Categoría</label>
+                                <select class="form-select bg-light border-0 shadow-none" id="categoriaSelect" required>
+                                    <option value="">Seleccione una...</option>
+                                </select>
                             </div>
                         </div>
-                    `;
 
-                    // Evento del botón "Agregar al carrito"
-                    col.querySelector(".agregarCarrito").addEventListener("click", () => {
-                        carrito++;
-                        contadorCarrito.textContent = carrito;
-                    });
-
-                    contenedorProductos.appendChild(col);
-                }
-
-            } catch (error) {
-                console.error("Error al cargar productos:", error);
-                loadingProductos.style.display = "none";
-                contenedorProductos.innerHTML = `
-                    <div class="col-12">
-                        <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill"></i>
-                            <span>No se pudieron cargar los productos. Por favor, intenta más tarde.</span>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="enOferta">
+                            <label class="form-check-label" for="enOferta">¿Está en Oferta?</label>
                         </div>
-                    </div>
-                `;
-            }
-        }
 
-        // Iniciar carga al cargar la página
-        cargarProductos();
-    </script>
+                        <div class="mb-3 d-none" id="contenedorPrecioOferta">
+                            <label for="precioOferta" class="form-label text-muted small fw-bold">Precio de Oferta (Q)</label>
+                            <input type="number" step="0.01" class="form-control bg-light border-0 shadow-none"
+                                   id="precioOferta" placeholder="0.00">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="imagen" class="form-label text-muted small fw-bold">URL de la Imagen</label>
+                            <input type="url" class="form-control bg-light border-0 shadow-none" id="imagen"
+                                   required placeholder="https://ejemplo.com/imagen.jpg">
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-nm btn-lg rounded-pill shadow-sm"
+                                    id="btnGuardar">Guardar Producto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         Modal: Detalle del Producto
+    ═══════════════════════════════════════════════ -->
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow overflow-hidden" id="detalleContenido">
+                <!-- Se inyecta dinámicamente desde app.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         Modal: Confirmar Eliminación
+    ═══════════════════════════════════════════════ -->
+    <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 rounded-4 shadow text-center p-4">
+                <i class="bi bi-exclamation-circle text-danger mb-3" style="font-size: 3rem;"></i>
+                <h5 class="fw-bold mb-3">¿Eliminar Producto?</h5>
+                <p class="text-muted mb-4 small">Esta acción no se puede deshacer.</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <button type="button" class="btn btn-light rounded-pill px-4"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger rounded-pill px-4"
+                            id="btnConfirmarEliminar">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         Toast de notificaciones
+    ═══════════════════════════════════════════════ -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="appToast" class="toast align-items-center text-white bg-primary border-0"
+             role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMensaje"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast" aria-label="Cerrar"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Lógica de la tienda (CRUD + API) -->
+    <script src="js/app.js"></script>
 </body>
 
 </html>

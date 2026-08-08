@@ -1,0 +1,17 @@
+{
+  "name": "bytecore-tienda-online",
+  "version": "1.0.0",
+  "description": "Tienda Online de Hardware ByteCore — Componentes y Hardware para PC",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "Luis Aroche",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
